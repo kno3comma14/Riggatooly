@@ -1,0 +1,50 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# --- Poetry ---
+# Lock file is usually kept, but virtualenvs are ignored
+.python-version
+# If you prefer to keep the virtualenv inside the project:
+.venv/
+
+# --- Configuration & Local Settings ---
+# Ignores all .cfg files as requested
+*.cfg
+# Also ignore local JSON configs if they contain machine-specific paths
+config.json
+# But keep the template if you make one
+!config.example.json
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
+.directory
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Build & Distribution ---
+dist/
+build/
+*.spec
+*.egg-info/
+
+# --- Qt / PySide Specific ---
+# If you use Qt Designer, you might want to ignore compiled UI/Resource files
+# so they are generated fresh from the .ui files
+*_rc.py
+ui_*.py
+
+# --- Project Specific ---
+# Ignore the actual animation files being processed during testing
+*.tnz
+*.tnz.bak

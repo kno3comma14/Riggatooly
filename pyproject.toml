@@ -1,0 +1,25 @@
+[project]
+name = "riggatooly"
+version = "0.1.0"
+description = "A tool for riggers"
+authors = [
+    {name = "kno3comma14",email = "enyert.vinas@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+    "pyside6 (>=6.11.0,<7.0.0)",
+    "qt-material (>=2.17,<3.0)",
+    "psd-tools (>=1.14.2,<2.0.0)",
+    "numpy (>=2.4.4,<3.0.0)"
+]
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+

@@ -1,0 +1,17 @@
+{
+    "ui": {
+        "window_title": "Riggatooly",
+        "header": "PSD to Tahoma2D Pipeline",
+        "drop_label": "Drag & Drop .tnz or .json here\nOR",
+        "browse_btn": "Browse Files",
+        "log_header": "Process Log:",
+        "run_btn": "Inject Offsets & Parent Pegs",
+        "waiting_input": "Waiting for input..."
+    },
+    "logs": {
+        "start": "Starting transformation...",
+        "load_success": "Loaded: {path}",
+        "xml_success": "Success: XML structure modified.",
+        "error_missing_file": "Error: Could not find file {path}"
+    }
+}
