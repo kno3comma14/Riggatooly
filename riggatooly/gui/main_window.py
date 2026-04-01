@@ -1,11 +1,17 @@
 import json
 import os
 import sys
+from riggatooly.core import injector, snapper
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
                              QPushButton, QLabel, QFileDialog, QTextEdit, QFrame)
 from PySide6.QtCore import Qt, Signal
 
 from riggatooly.utils import STRINGS
+
+file_list = {
+    "psd_file": "",
+    "tnz_file": ""
+}
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -56,6 +62,7 @@ class MainWindow(QMainWindow):
         self.btn_run = QPushButton(STRINGS["ui"]["run_btn"])
         self.btn_run.setObjectName("RunButton")
         self.btn_run.setFixedHeight(40)
+        self.btn_run.setEnabled(False)
         # self.btn_run.setStyleSheet("background-color: #00adb5; font-weight: bold;")
         self.btn_run.clicked.connect(self.process_files)
         self.layout.addWidget(self.btn_run)
@@ -79,16 +86,34 @@ class MainWindow(QMainWindow):
         """Append messages to the UI console."""
         self.console.append(f"> {message}")
 
+    def store_input_files(self, file_path):
+        if file_path.endswith(".tnz"):
+            file_list["tnz_file"] = file_path
+            self.log("TNZ file detected.")
+        elif file_path.endswith(".psd"):
+            file_list["psd_file"] = file_path
+            self.log("PSD file detected.")
+
+        if not file_list["tnz_file"] == "" and not file_list["psd_file"] == "":
+            self.btn_run.setEnabled(True)
+
     def open_file_dialog(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select File", "", "Supported Files (*.tnz *.json)")
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select File", "", "Supported Files (*.tnz *.psd )")
         if file_path:
+            self.store_input_files(file_path)
+            self.drop_label.setText(os.path.basename(file_path))
             self.log(f"Loaded: {file_path}")
 
     def process_files(self):
-        self.log("Starting transformation...")
-        self.log("Converting PS coordinates to Tahoma Stage Inches...")
-        # Here you will call your core/xml_injector.py functions
-        self.log("Success: XML structure modified.")
+        self.btn_run.setEnabled(False)
+        self.log("Converting PSD coordinates to Tahoma Stage Inches...")
+        pixels_data = snapper.calculate_offsets(file_list["psd_file"], [255, 0, 0])
+        self.log("Success: PSD coordinates converted to Tahoma Stage Inches.")
+        self.log("Modifying scene XML structure...")
+        injector.inject_offsets(file_list["tnz_file"], pixels_data)
+        self.log("Success: XML structure modified. TNZ file: {}".format(file_list["tnz_file"]))
+        self.log("Done.")
+        self.btn_run.setEnabled(True)
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication

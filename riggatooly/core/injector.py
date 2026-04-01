@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-import json
 
 def prepare_peg_name(peg_name):
     return peg_name[:-2] + "_P"
@@ -61,12 +60,9 @@ def inject_compensation(peg_element, stage_x, stage_y):
     y_default.text = f" {round(stage_y, 5)} "
 
 
-def inject_offsets(tnz_path, json_path, output_path, dpi=120):
-    with open(json_path, 'r') as f:
-        raw_offsets = json.load(f)
-    
+def inject_offsets(tnz_path, pixels_data, dpi=120):
+    raw_offsets = pixels_data
     offsets = {k.replace('\x00', ''): v for k, v in raw_offsets.items()}
-    print(offsets)
     tree = ET.parse(tnz_path)
     root = tree.getroot()
     pegbars = root.find(".//pegbars")
@@ -95,5 +91,4 @@ def inject_offsets(tnz_path, json_path, output_path, dpi=120):
             inject_compensation(parent_peg, sx, sy)
             p.find(".//parent").attrib["id"] = parent_peg.attrib["id"]
 
-    tree.write(output_path, encoding="utf-8")
-    print(f"Successfully injected {len(offsets)} pivots into {output_path}")
+    tree.write(tnz_path, encoding="utf-8")
