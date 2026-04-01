@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="data">
+        <file alias="strings.json">riggatooly/resources/strings.json</file>
+        <file alias="style.qss">riggatooly/resources/style.qss</file>
+    </qresource>
+</RCC>

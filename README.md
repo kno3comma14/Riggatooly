@@ -28,6 +28,11 @@ TODO
 - In your FX windows you will new pegs associated to the drawings
 and all the pivotes created.
 
+## Considerations
+At this point of the application, it probably will change your tahoma scene
+every run. It's recommended to see the application log and see whats happening.
+On the other hand, keeping a tnz backup file is recommended.
+
 ## Status
 The project is working at the moment but the GUI has some stuff to polish
 regarding the user experience.

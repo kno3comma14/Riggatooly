@@ -6,6 +6,9 @@ __pycache__/
 env/
 venv/
 ENV/
+dist/
+build/
+*.egg-info
 
 # --- Poetry ---
 # Lock file is usually kept, but virtualenvs are ignored
