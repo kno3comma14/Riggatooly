@@ -33,5 +33,5 @@ The project is working at the moment but the GUI has some stuff to polish
 regarding the user experience.
 
 ## License
-See [LICENSE]("./LICENSE")
+See [LICENSE]("LICENSE")
 
