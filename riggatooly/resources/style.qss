@@ -22,3 +22,9 @@ QPushButton#RunButton {
     background-color: #00adb5;
     font-weight: bold;
 }
+
+QPushButton#RunButton:disabled {
+    background-color: #444; 
+    color: #888;            
+    border: 1px solid #555; 
+}
