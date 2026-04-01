@@ -37,6 +37,9 @@ On the other hand, keeping a tnz backup file is recommended.
 The project is working at the moment but the GUI has some stuff to polish
 regarding the user experience.
 
+## Releases
+Go to [releases](https://github.com/kno3comma14/Riggatooly/actions/runs/23870741674) and get the version for your OS.
+
 ## License
 See [LICENSE](LICENSE)
 
