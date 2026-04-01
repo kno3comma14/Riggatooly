@@ -1,6 +1,44 @@
 import xml.etree.ElementTree as ET
 import json
 
+def prepare_peg_name(peg_name):
+    return peg_name[:-2] + "_P"
+
+def create_parent_peg(next_id, child_peg, pegbars):
+    child_peg_name = child_peg.find(".//name").text.strip()
+    parent_peg_name = prepare_peg_name(child_peg_name)
+    parent_peg = ET.SubElement(pegbars, "pegbar", {"id": "Peg" + str(next_id)})
+    
+    center = "0 0 0 0"
+    
+    ET.SubElement(parent_peg, "parent", {
+        "handle": "B", 
+        "id": "Table", 
+        "parentHandle": "B"
+    })
+
+    name = ET.SubElement(parent_peg, "name")
+    name.text = parent_peg_name
+    
+    ET.SubElement(parent_peg, "isOpened").text = " 0 "
+    ET.SubElement(parent_peg, "status").text = " 0 "
+
+    ET.SubElement(parent_peg, "center").text = f" {center} "
+
+    ET.SubElement(parent_peg, "isOpened").text = " 0 "
+    ET.SubElement(parent_peg, "status").text = " 0 "
+
+    for tag in ["sx", "sy", "sc"]:
+        parent_tag = ET.SubElement(parent_peg, tag)
+        default = ET.SubElement(parent_tag, "default")
+        default.text = " 1 "
+
+    # 7. Add node position
+    ET.SubElement(parent_peg, "nodePos").text = " 24350.6 24990.9 "
+    
+    return parent_peg
+
+
 def inject_compensation(peg_element, stage_x, stage_y):
     x_tag = peg_element.find("x")
     if x_tag is None:
@@ -23,7 +61,7 @@ def inject_compensation(peg_element, stage_x, stage_y):
     y_default.text = f" {round(stage_y, 5)} "
 
 
-def inject_offsets(tnz_path, json_path, output_path):
+def inject_offsets(tnz_path, json_path, output_path, dpi=120):
     with open(json_path, 'r') as f:
         raw_offsets = json.load(f)
     
@@ -32,16 +70,13 @@ def inject_offsets(tnz_path, json_path, output_path):
     tree = ET.parse(tnz_path)
     root = tree.getroot()
     pegbars = root.find(".//pegbars")
+    pegs_counter = 0
     for p in pegbars.findall("pegbar"):
         peg_name = ""
         peg_name_element = p.find(".//name")
         if peg_name_element is not None:
             peg_name = peg_name_element.text.strip()
-            print(peg_name)
         if peg_name in offsets:
-            print("In offset")
-            dpi = 120
-            
             tpx = offsets[peg_name]['x']
             tpy = offsets[peg_name]['y']
 
@@ -53,13 +88,12 @@ def inject_offsets(tnz_path, json_path, output_path):
             p.find(".//center").text = new_center_value
 
             inject_compensation(p, sx, sy)
-                
 
+            pegs_counter += 1
+            parent_peg = create_parent_peg(pegs_counter, p, pegbars)
+            parent_peg.find(".//center").text = new_center_value
+            inject_compensation(parent_peg, sx, sy)
+            p.find(".//parent").attrib["id"] = parent_peg.attrib["id"]
 
     tree.write(output_path, encoding="utf-8")
-    # print(f"Successfully injected {len(offsets)} pivots into {output_path}")
-
-# if __name__ == "__main__":
-#     inject_offsets("/Users/enyertvinas/Projects/learning/drawing/basics/tahoma2d/serious_step/serious_steps/scenes/testing_auto_snapping.tnz", 
-#                    "rig_offsets.json", 
-#                    "/Users/enyertvinas/Projects/learning/drawing/basics/tahoma2d/serious_step/serious_steps/scenes/testing_auto_snapping.tnz")
+    print(f"Successfully injected {len(offsets)} pivots into {output_path}")

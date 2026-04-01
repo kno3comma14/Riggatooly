@@ -1,7 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication
 from riggatooly.gui.main_window import MainWindow
-from qt_material import apply_stylesheet
 
 def load_stylesheet(app, path):
     with open(path, "r") as f:

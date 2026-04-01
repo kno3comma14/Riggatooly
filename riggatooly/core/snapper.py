@@ -19,15 +19,17 @@ def get_color_pivot(layer, target_rgb):
     return (global_x, global_y)
 
 def calculate_offsets(psd_path, target_rgb):
+    print("Calculating offsets for " + psd_path)
     psd = PSDImage.open(psd_path)
     canvas_w, canvas_h = psd.width, psd.height
     
     rig_data = {}
 
     def walk_layers(item):
-        if item.is_group():
+        print(item.name + " " + str(item.is_visible()))
+        if item.is_group() and item.is_visible():
             for child in item: walk_layers(child)
-        else:
+        elif item.is_visible():
             pivot = get_color_pivot(item, target_rgb)
             if pivot:
                 gx, gy = pivot
@@ -41,11 +43,12 @@ def calculate_offsets(psd_path, target_rgb):
         
     return rig_data
 
-# if __name__ == "__main__":
-#     # Example: Look for bright RED (255, 0, 0) marks in 'char.psd'
-#     results = calculate_offsets("first_break_down.psd", [255, 0, 0])
+
+
+# if __name__ == "__main__": 
+#     results = calculate_offsets("adam_test.psd", [255, 0, 0])
     
-#     with open("rig_offsets.json", "w") as f:
+#     with open("adam_offsets.json", "w") as f:
 #         json.dump(results, f, indent=4)
         
-#     print("Snapping data generated in rig_offsets.json")
+#     print("Snapping data generated in adam_offsets.json")
