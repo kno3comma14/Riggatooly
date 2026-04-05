@@ -33,8 +33,6 @@ def calculate_offsets(psd_path, target_rgb):
         if item.is_group() and item.is_visible():
             for child in item: walk_layers(child)
         elif item.is_visible() and item.parent.name != "ParentPegs":
-            if item.parent.name == "ParentPegs":
-                rig_data["ParentPegs"].append(item.name)
             pivot = get_color_pivot(item, target_rgb)
             if pivot:
                 gx, gy = pivot
