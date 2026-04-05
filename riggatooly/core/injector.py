@@ -60,7 +60,7 @@ def inject_compensation(peg_element, stage_x, stage_y):
     y_default.text = f" {round(stage_y, 5)} "
 
 
-def inject_offsets(tnz_path, pixels_data, dpi=120):
+def inject_offsets(tnz_path, pixels_data, logger=None, dpi=120):
     raw_offsets = pixels_data
     offsets = {k.replace('\x00', ''): v for k, v in raw_offsets.items()}
     tree = ET.parse(tnz_path)
@@ -85,10 +85,16 @@ def inject_offsets(tnz_path, pixels_data, dpi=120):
 
             inject_compensation(p, sx, sy)
 
-            pegs_counter += 1
-            parent_peg = create_parent_peg(pegs_counter, p, pegbars)
-            parent_peg.find(".//center").text = new_center_value
-            inject_compensation(parent_peg, sx, sy)
-            p.find(".//parent").attrib["id"] = parent_peg.attrib["id"]
+            if logger is not None:
+                logger.log(f"Injected offsets for {peg_name}")
+
+            if peg_name in pixels_data["ParentPegs"]:
+                pegs_counter += 1
+                parent_peg = create_parent_peg(pegs_counter, p, pegbars)
+                parent_peg.find(".//center").text = new_center_value
+                inject_compensation(parent_peg, sx, sy)
+                p.find(".//parent").attrib["id"] = parent_peg.attrib["id"]
+                if logger is not None:
+                    logger.log(f"Injected parent peg for {peg_name}")
 
     tree.write(tnz_path, encoding="utf-8")

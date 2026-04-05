@@ -110,7 +110,7 @@ class MainWindow(QMainWindow):
         pixels_data = snapper.calculate_offsets(file_list["psd_file"], [255, 0, 0])
         self.log("Success: PSD coordinates converted to Tahoma Stage Inches.")
         self.log("Modifying scene XML structure...")
-        injector.inject_offsets(file_list["tnz_file"], pixels_data)
+        injector.inject_offsets(file_list["tnz_file"], pixels_data, self)
         self.log("Success: XML structure modified. TNZ file: {}".format(file_list["tnz_file"]))
         self.log("Done.")
         self.btn_run.setEnabled(True)

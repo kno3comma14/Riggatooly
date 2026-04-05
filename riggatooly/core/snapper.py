@@ -1,6 +1,7 @@
 from psd_tools import PSDImage
 import numpy as np
 
+
 def get_color_pivot(layer, target_rgb):
     if  layer.topil() is not None:
         img = layer.topil().convert('RGB')
@@ -24,12 +25,16 @@ def calculate_offsets(psd_path, target_rgb):
     psd = PSDImage.open(psd_path)
     canvas_w, canvas_h = psd.width, psd.height
     
-    rig_data = {}
+    rig_data = {
+        "ParentPegs": []
+    }
 
     def walk_layers(item):
         if item.is_group() and item.is_visible():
             for child in item: walk_layers(child)
-        elif item.is_visible():
+        elif item.is_visible() and item.parent.name != "ParentPegs":
+            if item.parent.name == "ParentPegs":
+                rig_data["ParentPegs"].append(item.name)
             pivot = get_color_pivot(item, target_rgb)
             if pivot:
                 gx, gy = pivot
@@ -37,6 +42,8 @@ def calculate_offsets(psd_path, target_rgb):
                 ty = (canvas_h / 2) - gy
                 
                 rig_data[item.name] = {"x": round(tx, 2), "y": round(ty, 2)}
+        elif item.is_visible() and item.parent.name == "ParentPegs":
+            rig_data["ParentPegs"].append(item.name)
 
     for layer in psd:
         walk_layers(layer)
