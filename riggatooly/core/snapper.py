@@ -1,10 +1,11 @@
 from psd_tools import PSDImage
 import numpy as np
-
+import re
+from riggatooly import utils
 
 def get_color_pivot(layer, target_rgb):
     if  layer.topil() is not None:
-        img = layer.topil().convert('RGB')
+        img = layer.topil().convert('RGBA')
         data = np.array(img)
         
         mask = np.all(data == target_rgb, axis=-1)
@@ -26,7 +27,8 @@ def calculate_offsets(psd_path, target_rgb):
     canvas_w, canvas_h = psd.width, psd.height
     
     rig_data = {
-        "ParentPegs": []
+        "parent_pegs": [],
+        "pivotes": {}
     }
 
     def walk_layers(item):
@@ -39,11 +41,12 @@ def calculate_offsets(psd_path, target_rgb):
                 tx = gx - (canvas_w / 2)
                 ty = (canvas_h / 2) - gy
                 
-                rig_data[item.name] = {"x": round(tx, 2), "y": round(ty, 2)}
-        elif item.is_visible() and item.parent.name == "ParentPegs":
-            rig_data["ParentPegs"].append(item.name)
+                rig_data["pivotes"][utils.clean_string(item.name)] = {"x": round(tx, 2), "y": round(ty, 2)}
+        elif utils.clean_string(item.name) == "ParentPegs":
+            rig_data["parent_pegs"] = [utils.clean_string(child.name) for child in item]
 
     for layer in psd:
         walk_layers(layer)
         
+    print(rig_data) # debug
     return rig_data

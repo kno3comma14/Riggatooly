@@ -1,9 +1,14 @@
 import json
 import os
 import sys
+import re
 import rc_resources
 
+
 from PySide6.QtCore import QFile, QTextStream
+
+def clean_string(input):
+    return re.sub(r'[^\w\s-]', '', input).strip()
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
