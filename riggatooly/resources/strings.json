@@ -4,13 +4,14 @@
             "window_title": "Riggatooly",
             "header": "PSD to Universal Rigging Structure",
             "drop_label": "Drag & Drop .psd or .kra(not implemente yet) file here\nOR",
-            "browse_btn": "Browse Files",
-            "browse_image_btn": "Browse Images Folder",
+            "browse_btn": "Browse PSD File",
+            "browse_image_btn": "Browse target folder",
             "log_header": "Process Log:",
             "run_btn": "Generate Universal Rigging Structure...",
             "waiting_input": "Waiting for input...",
             "input_completed": "Input files loaded. Press Generate Universal Rigging Structure button.",
-            "change_pivote_color_btn": "Change Pivote Color"
+            "change_pivote_color_btn": "Change Pivote Color",
+            "enable_pegs_per_drawing": "Enable peg per drawing"
         },
         "logs": {
             "start": "Starting transformation...",

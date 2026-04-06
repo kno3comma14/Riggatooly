@@ -146,7 +146,7 @@ class MainWindow(QMainWindow):
         dialogue.setFileMode(QFileDialog.FileMode.Directory)
         dialogue.setOption(QFileDialog.Option.ShowDirsOnly, True)
 
-        img_folder_path = dialogue.getExistingDirectory(self, "Select Folder")
+        img_folder_path = dialogue.getExistingDirectory(self, "Select target folder")
         
         if img_folder_path:
             self.store_input_files(file_map["image_file"], img_folder_path)
