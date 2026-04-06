@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from riggatooly.core import injector, snapper
+from riggatooly.core import snapper
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
                              QPushButton, QLabel, QFileDialog, QTextEdit, QFrame, QColorDialog)
 from PySide6.QtGui import QColor
@@ -126,7 +126,6 @@ class MainWindow(QMainWindow):
         pixels_data = snapper.calculate_offsets(file_map["image_file"], pivote_color)
         self.log("Success: PSD coordinates and sizes calculated.")
         self.log("Creating universal rigging structure file...")
-        # injector.inject_offsets(file_list["tnz_file"], pixels_data, self)
         self.log("Done.")
         self.btn_run.setEnabled(True)
 
