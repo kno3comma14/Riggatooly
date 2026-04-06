@@ -45,7 +45,7 @@ Button:disabled \
            \x0a    \
 border: 1px soli\
 d #555; \x0a}\x0a\
-\x00\x00\x04\x1c\
+\x00\x00\x04T\
 {\
 \x0a    \x22english\x22: \
 {\x0a        \x22ui\x22: \
@@ -64,55 +64,59 @@ file here\x5cnOR\x22,\x0a\
             \x22bro\
 wse_btn\x22: \x22Brows\
 e Files\x22,\x0a      \
-      \x22log_heade\
-r\x22: \x22Process Log\
-:\x22,\x0a            \
-\x22run_btn\x22: \x22Gene\
-rate Universal R\
-igging Structure\
-...\x22,\x0a          \
-  \x22waiting_input\
-\x22: \x22Waiting for \
-input...\x22,\x0a     \
-       \x22input_co\
-mpleted\x22: \x22Input\
- files loaded. P\
-ress Generate Un\
-iversal Rigging \
-Structure button\
+      \x22browse_im\
+age_btn\x22: \x22Brows\
+e Images Folder\x22\
+,\x0a            \x22l\
+og_header\x22: \x22Pro\
+cess Log:\x22,\x0a    \
+        \x22run_btn\
+\x22: \x22Generate Uni\
+versal Rigging S\
+tructure...\x22,\x0a  \
+          \x22waiti\
+ng_input\x22: \x22Wait\
+ing for input...\
+\x22,\x0a            \x22\
+input_completed\x22\
+: \x22Input files l\
+oaded. Press Gen\
+erate Universal \
+Rigging Structur\
+e button.\x22,\x0a    \
+        \x22change_\
+pivote_color_btn\
+\x22: \x22Change Pivot\
+e Color\x22\x0a       \
+ },\x0a        \x22log\
+s\x22: {\x0a          \
+  \x22start\x22: \x22Star\
+ting transformat\
+ion...\x22,\x0a       \
+     \x22load_succe\
+ss\x22: \x22Loaded: {p\
+ath}\x22,\x0a         \
+   \x22xml_success\x22\
+: \x22Success: Univ\
+ersal Rigging St\
+ructure modified\
 .\x22,\x0a            \
-\x22change_pivote_c\
-olor_btn\x22: \x22Chan\
-ge Pivote Color\x22\
-\x0a        },\x0a    \
-    \x22logs\x22: {\x0a  \
-          \x22start\
-\x22: \x22Starting tra\
-nsformation...\x22,\
-\x0a            \x22lo\
-ad_success\x22: \x22Lo\
-aded: {path}\x22,\x0a \
-           \x22xml_\
-success\x22: \x22Succe\
-ss: Universal Ri\
-gging Structure \
-modified.\x22,\x0a    \
-        \x22error_m\
-issing_file\x22: \x22E\
-rror: Could not \
-find file {path}\
-\x22\x0a        },\x0a   \
-     \x22buttons\x22: \
-{\x0a            \x22o\
-k\x22: \x22OK\x22,\x0a      \
-      \x22cancel\x22: \
-\x22Cancel\x22,\x0a      \
-      \x22yes\x22: \x22Ye\
-s\x22,\x0a            \
-\x22no\x22: \x22No\x22,\x0a    \
-        \x22close\x22:\
- \x22Close\x22\x0a       \
- }\x0a    }\x0a}\x0a\
+\x22error_missing_f\
+ile\x22: \x22Error: Co\
+uld not find fil\
+e {path}\x22\x0a      \
+  },\x0a        \x22bu\
+ttons\x22: {\x0a      \
+      \x22ok\x22: \x22OK\x22\
+,\x0a            \x22c\
+ancel\x22: \x22Cancel\x22\
+,\x0a            \x22y\
+es\x22: \x22Yes\x22,\x0a    \
+        \x22no\x22: \x22N\
+o\x22,\x0a            \
+\x22close\x22: \x22Close\x22\
+\x0a        }\x0a    }\
+\x0a}\x0a\
 "
 
 qt_resource_name = b"\
@@ -138,7 +142,7 @@ qt_resource_struct = b"\
 \x00\x00\x00\x0e\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\
 \x00\x00\x01\x9dJ\x0d\xac|\
 \x00\x00\x00&\x00\x00\x00\x00\x00\x01\x00\x00\x02P\
-\x00\x00\x01\x9db\x98\xa2\x9c\
+\x00\x00\x01\x9dc\xee\x92\x94\
 "
 
 def qInitResources():

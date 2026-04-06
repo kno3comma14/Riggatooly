@@ -17,11 +17,20 @@ def get_color_pivot(psd_item, pil_img, target_rgb):
     
     return (global_x, global_y)
 
-def calculate_offsets(psd_path, target_rgb):
+def calculate_offsets(psd_path, image_folder_path, target_rgb, enable_peg_per_drawing):
     psd = PSDImage.open(psd_path)
     canvas_w, canvas_h = psd.width, psd.height
     
-    rig_data = {"parent_pegs": [], "parts": {}}
+    rig_data = {
+        "metadata": {
+            "width": canvas_w, 
+            "height": canvas_h,
+            "psd_path": psd_path,
+            "image_folder_path": image_folder_path
+        },
+        "parent_pegs": [], 
+        "parts": {}
+    }
 
     def walk_layers(item):
         clean_name = utils.clean_string(item.name)
@@ -67,11 +76,15 @@ def calculate_offsets(psd_path, target_rgb):
     for layer in psd:
         walk_layers(layer)
         
-    for p in rig_data["parts"].keys():
-        if p in rig_data["parent_pegs"]:    
+    if not enable_peg_per_drawing:
+        for p in rig_data["parts"].keys():
+            if p in rig_data["parent_pegs"]:    
+                rig_data["parts"][p]["parent"] = p + "-P"
+            else:
+                rig_data["parts"][p]["parent"] = None
+    else:
+        for p in rig_data["parts"].keys():
             rig_data["parts"][p]["parent"] = p + "-P"
-        else:
-            rig_data["parts"][p]["parent"] = None
 
     del rig_data["parent_pegs"]
     

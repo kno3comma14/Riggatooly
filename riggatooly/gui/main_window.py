@@ -2,7 +2,7 @@ import json
 import os
 import sys
 from riggatooly.core import snapper
-from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
+from PySide6.QtWidgets import (QCheckBox,QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
                              QPushButton, QLabel, QFileDialog, QTextEdit, QFrame, QColorDialog)
 from PySide6.QtGui import QColor
 from PySide6.QtCore import Qt, Signal
@@ -10,8 +10,13 @@ from PySide6.QtCore import Qt, Signal
 from riggatooly.utils import STRINGS
 
 file_map = {
-    "image_file": ""
+    "image_file": "",
+    "image_folder_path": ""
 }
+
+peg_per_drawing = False
+
+
 
 pivote_color = list(QColor("red").getRgb())
 
@@ -50,7 +55,18 @@ class MainWindow(QMainWindow):
         self.btn_browse.clicked.connect(self.open_file_dialog)
         self.drop_layout.addWidget(self.btn_browse, alignment=Qt.AlignCenter)
         
+        self.btn_browse_folder = QPushButton(STRINGS["english"]["ui"]["browse_image_btn"])
+        self.btn_browse_folder.setFixedWidth(150)
+        self.btn_browse_folder.clicked.connect(self.open_image_folder_path_dialog)
+        self.drop_layout.addWidget(self.btn_browse_folder, alignment=Qt.AlignCenter)
+        
         self.layout.addWidget(self.drop_frame)
+
+        self.checkbox = QCheckBox("Peg per Drawing")
+        self.checkbox.setChecked(False)   
+        self.checkbox.stateChanged.connect(self.on_change_checkbox_state)
+        self.layout.addWidget(self.checkbox)
+        
 
         # Pivote Color
         self.piv_btn_color = QPushButton(STRINGS["english"]["ui"]["change_pivote_color_btn"])
@@ -104,28 +120,51 @@ class MainWindow(QMainWindow):
         """Append messages to the UI console."""
         self.console.append(f"> {message}")
 
-    def store_input_files(self, file_path):
+    def store_input_files(self, file_path, img_folder_path):
         
         if file_path.endswith(".kra") or file_path.endswith(".psd"):
             file_map["image_file"] = file_path
             self.log("Image file detected. Path: {}".format(file_path))
 
-        if not file_map["image_file"] == "":
+        if img_folder_path:
+            file_map["image_folder_path"] = img_folder_path
+            self.log("Images folder detected. Path: {}".format(img_folder_path))
+
+        if not file_map["image_file"] == "" and not file_map["image_folder_path"] == "":
             self.btn_run.setEnabled(True)
 
     def open_file_dialog(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select File", "", "Supported Files (*.psd *.kra)")
         if file_path:
-            self.store_input_files(file_path)
+            self.store_input_files(file_path, file_map["image_file"])
             self.drop_label.setText(os.path.basename(file_path))
             self.log(f"Loaded: {file_path}")
 
+
+    def open_image_folder_path_dialog(self):
+        dialogue = QFileDialog()
+        dialogue.setFileMode(QFileDialog.FileMode.Directory)
+        dialogue.setOption(QFileDialog.Option.ShowDirsOnly, True)
+
+        img_folder_path = dialogue.getExistingDirectory(self, "Select Folder")
+        
+        if img_folder_path:
+            self.store_input_files(file_map["image_file"], img_folder_path)
+            self.drop_label.setText(os.path.basename(img_folder_path))
+            self.log(f"Loaded: {img_folder_path}")
+
+    def on_change_checkbox_state(self, state):
+        global peg_per_drawing
+        peg_per_drawing = self.checkbox.isChecked()
+
+    
     def process_files(self):
         self.btn_run.setEnabled(False)
         self.log("Converting PSD coordinates and sizes")
-        pixels_data = snapper.calculate_offsets(file_map["image_file"], pivote_color)
+        pixels_data = snapper.calculate_offsets(file_map["image_file"], file_map["image_folder_path"], pivote_color, peg_per_drawing)
         self.log("Success: PSD coordinates and sizes calculated.")
         self.log("Creating universal rigging structure file...")
+        # TODO: Create universal rigging structure file
         self.log("Done.")
         self.btn_run.setEnabled(True)
 
