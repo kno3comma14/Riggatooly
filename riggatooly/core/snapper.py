@@ -21,7 +21,7 @@ def calculate_offsets(psd_path, target_rgb):
     psd = PSDImage.open(psd_path)
     canvas_w, canvas_h = psd.width, psd.height
     
-    rig_data = {"parent_pegs": []}
+    rig_data = {"parent_pegs": [], "parts": {}}
 
     def walk_layers(item):
         clean_name = utils.clean_string(item.name)
@@ -56,7 +56,7 @@ def calculate_offsets(psd_path, target_rgb):
                     tx = gx - (canvas_w / 2)
                     ty = (canvas_h / 2) - gy
                     
-                    rig_data[clean_name] = {
+                    rig_data["parts"][clean_name] = {
                         "pivote": {"x": float(tx), "y": float(ty)},
                         "position": {"x": float(pos_x), "y": float(pos_y)},
                         "bbox": [left, top, right, bottom]
@@ -67,4 +67,12 @@ def calculate_offsets(psd_path, target_rgb):
     for layer in psd:
         walk_layers(layer)
         
+    for p in rig_data["parts"].keys():
+        if p in rig_data["parent_pegs"]:    
+            rig_data["parts"][p]["parent"] = p + "-P"
+        else:
+            rig_data["parts"][p]["parent"] = None
+
+    del rig_data["parent_pegs"]
+    
     return rig_data
