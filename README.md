@@ -1,45 +1,44 @@
-# Rigatooly
-A tool to help riggers to start their rigging projects with
-a good base hierarchy and pivotes already defined.
+# 🛠️ Riggatooly
+**Universal 2D Pipeline & Automated Rigging Framework**
 
-## Description
-Riggatooly is a GUI to simpligy the process of selecting pivotes
-when Tahoma2D users select an external application to create their
-initial rigs.
-The tool takes the following inputs: a *.psd file and a *.tzn file.
-The tzn is a simple Tahoma2D scene file. 
-The psd file contains an image with many layers(ideally one layer 
-by drawing in Tahoma2D scene). Every layer should contain a point
-or a little filled circle marked with the color [r,g,b] = [255, 0, 0]
-to indicate that inside of that colored region a pivote(or a center)
-is located.
-With this input, Riggatooly locate the pivotes, assign them to
-the drawings and create pegs associated to the drawings pointing to
-the same pivote(center).
+Riggatooly is a high-performance Technical Animation (TA) toolkit designed to bridge the gap between raster artwork (Photoshop/Krita) and professional 2D animation suites. By implementing a **Universal 2D Manifest (U2DM)**, Riggatooly automates the most time-consuming part of production: pivot placement, asset extraction, and skeletal hierarchy construction.
 
-## Demo video
-TODO
+## 🚀 The Vision
+In professional 2D pipelines, rigging usually requires hours of manual labor to set pivots and parent layers. **Riggatooly** solves this by using a "Source of Truth" workflow:
+1.  **Extract**: Identify pivots via color-coded markers and parse hierarchies directly from PSD metadata.
+2.  **Manifest**: Generate a software-agnostic JSON schema containing all transformation and skeletal data.
+3.  **Inject**: Automatically reconstruct the rig in the target software (Harmony, Blender, Tahoma2D) using native APIs or file injection.
 
-## Usage
-- Open the program.
-- Load tnz and psd file using the file loader.
-- If everything is ok, press the "Inject Offsets Parent Pegs" button.
-- Re-open Tahoma2D or reload the scene.
-- In your FX windows you will new pegs associated to the drawings
-and all the pivotes created.
+## 🏗️ Technical Architecture
+Riggatooly is built on a modular "Extractor-Adapter" pattern:
 
-## Considerations
-At this point of the application, it probably will change your tahoma scene
-every run. It's recommended to see the application log and see whats happening.
-On the other hand, keeping a tnz backup file is recommended.
+*   **The Extractor (Core)**: A standalone Python/PySide6 application that uses `psd-tools` and `NumPy` to perform geometric center calculations and color-based pivot detection.
+*   **The Linter**: An integrated validation engine that scans source files for naming convention errors, duplicate layers, or missing pivots before data reaches the pipeline.
+*   **The Adapters**:
+    *   **Live-Link (API-based)**: Direct integration with **Toon Boom Harmony 25** (Python SDK) and **Blender Grease Pencil** (bpy) to build live node networks.
+    *   **File-Injection**: Automated XML scene generation for **Tahoma2D / OpenToonz**, allowing for "one-click" scene loading without internal plugins.
 
-## Status
-The project is working at the moment but the GUI has some stuff to polish
-regarding the user experience.
+## 🛠️ Key Features
+*   **Sub-pixel Pivot Accuracy**: Uses NumPy to calculate the "center of mass" for color-coded pivot markers in your source art.
+*   **Automatic Hierarchy Mapping**: Supports a dedicated `ParentPegs` group logic to define complex parent-child relationships within the PSD.
+*   **Industry Standard Naming**: Automatically handles `_D` (Drawing) and `-P` (Peg) suffixes to maintain professional rigging conventions.
+*   **Built-in Asset Management**: Automates the cropping and exporting of individual layers into optimized PNG sequences.
 
-## Releases
-Go to [releases](https://github.com/kno3comma14/Riggatooly/actions/runs/23870741674) and get the version for your OS.
+## 💻 Tech Stack
+*   **Language**: Python 3.9+ (Poetry managed)
+*   **UI Framework**: PySide6 (Qt)
+*   **Data Processing**: NumPy 2.x
+*   **PSD Handling**: psd-tools + Pillow (PIL)
+*   **Interoperability**: JSON / OpenUSD (Planned)
+
+## 📂 Project Roadmap
+- [x] Multi-format PSD Parsing & Data Extraction
+- [x] PySide6 GUI with real-time logging and color picking
+- [x] Automated PNG asset exportation
+- [ ] **Harmony 25 Adapter**: Automated Node View reconstruction
+- [ ] **Moho Adapter**: Another critical app in the industry
+- [ ] **Blender Adapter**: Grease Pencil skeletal generation
+- [ ] **Tahoma2D Adapter**: XML-based `.tnz` scene injection
 
 ## License
-See [LICENSE](LICENSE)
-
+See [License](LICENSE) file.
