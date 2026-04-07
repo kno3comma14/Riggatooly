@@ -1,6 +1,31 @@
 from psd_tools import PSDImage
 import numpy as np
 from riggatooly import utils
+import json
+
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (np.floating, np.float64, np.float32)):
+            return float(obj)
+        if isinstance(obj, (np.integer, np.int64, np.int32)):
+            return int(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)
+
+
+def get_image_data(layer):
+    return layer.topil()
+
+def save_image(layer, rig_data, image_name, format="png"):
+    image_data = get_image_data(layer)
+    path = rig_data["metadata"]["image_folder_path"] + "/" + utils.clean_string(image_name) + "." + format    
+    if image_data:
+        image_data.save(path)
+
+def save_image_list(targets_to_save, rig_data, format="png"):
+    for target in targets_to_save:
+        save_image(target, rig_data, target.name, format)
 
 def get_color_pivot(psd_item, pil_img, target_rgb):
     data = np.array(pil_img.convert('RGBA'))
@@ -37,7 +62,11 @@ def calculate_offsets(psd_path, image_folder_path, target_rgb, enable_peg_per_dr
         
         if clean_name == "ParentPegs" and item.is_group():
             rig_data["parent_pegs"] = [utils.clean_string(child.name) for child in item]
-            return 
+            return
+        elif clean_name == "Puppet" and item.is_group():
+            targets_to_save = [child for child in item]
+            save_image_list(targets_to_save, rig_data)
+            
 
         if item.is_group() and item.is_visible():
             for child in item: 
@@ -87,5 +116,8 @@ def calculate_offsets(psd_path, image_folder_path, target_rgb, enable_peg_per_dr
             rig_data["parts"][p]["parent"] = p + "-P"
 
     del rig_data["parent_pegs"]
+
+    with open(image_folder_path + "/manifest.json", "w") as f:
+        json.dump(rig_data, f, indent=4, cls=NpEncoder)
     
     return rig_data

@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
             self.btn_run.setEnabled(True)
 
     def open_file_dialog(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select File", "", "Supported Files (*.psd *.kra)")
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select PSD or KRA File", "", "Supported Files (*.psd *.kra)")
         if file_path:
             self.store_input_files(file_path, file_map["image_file"])
             self.drop_label.setText(os.path.basename(file_path))

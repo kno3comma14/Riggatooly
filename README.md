@@ -31,6 +31,28 @@ Riggatooly is built on a modular "Extractor-Adapter" pattern:
 *   **PSD Handling**: psd-tools + Pillow (PIL)
 *   **Interoperability**: JSON / OpenUSD (Planned)
 
+## 📖 Usage Guide
+
+The Riggatooly desktop interface provides a streamlined, step-by-step workflow to convert your artwork into a production-ready manifest.
+
+### 1. File Preparation
+Before launching the tool, ensure your source PSD follows the **Naming Conventions** (layers ending in `_D`) and contains a single-pixel color marker for each joint.
+
+### 2. Configuration
+1.  **Browse PSD File**: Click to select your source `.psd` file.
+2.  **Browse Target Folder**: Select the destination directory where Riggatooly will export your PNG assets and the `manifest.json`.
+3.  **Peg per Drawing**: Enable this checkbox to automatically generate a dedicated Peg layer for every drawing part (Industry Standard Practice).
+4.  **Change Pivote Color**: Open the color picker to match the RGB value used for the joint markers in your artwork.
+
+### 3. Execution & Logging
+*   **Generate Universal Rigging Structure**: Click the primary action button to begin the extraction.
+*   **Process Log**: Monitor the real-time terminal inside the GUI. It will provide instant feedback on:
+    *   File path detection and loading.
+    *   Coordinate conversion and bounding box calculations.
+    *   Success/Failure states for asset exportation.
+    *   Finalization of the U2DM Manifest file.
+
+
 ## 📂 Project Roadmap
 - [x] Multi-format PSD Parsing & Data Extraction
 - [x] PySide6 GUI with real-time logging and color picking
@@ -39,6 +61,9 @@ Riggatooly is built on a modular "Extractor-Adapter" pattern:
 - [ ] **Moho Adapter**: Another critical app in the industry
 - [ ] **Blender Adapter**: Grease Pencil skeletal generation
 - [ ] **Tahoma2D Adapter**: XML-based `.tnz` scene injection
+
+## Important
+Note: The Harmony Adapter must be executed using the internal Harmony Python 3.9 interpreter or an external environment mapped to Harmony's libraries.
 
 ## License
 See [License](LICENSE) file.
