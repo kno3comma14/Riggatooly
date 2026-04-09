@@ -1,7 +1,7 @@
 # 🛠️ Riggatooly
 **Universal 2D Pipeline & Automated Rigging Framework**
 
-Riggatooly is a high-performance Technical Animation (TA) toolkit designed to bridge the gap between raster artwork (Photoshop/Krita) and professional 2D animation suites. By implementing a **Universal 2D Manifest (U2DM)**, Riggatooly automates the most time-consuming part of production: pivot placement, asset extraction, and skeletal hierarchy construction.
+Riggatooly is a high-performance Technical Animation (TA) toolkit designed to bridge the gap between raster artwork (Photoshop/Krita) and professional 2D animation suites. By implementing a **Universal 2D Manifest (U2DM)**, Riggatooly automates some of the most time-consuming parts of production: pivot placement, asset extraction, and initial skeletal hierarchy construction.
 
 ## 🚀 The Vision
 In professional 2D pipelines, rigging usually requires hours of manual labor to set pivots and parent layers. **Riggatooly** solves this by using a "Source of Truth" workflow:
@@ -48,19 +48,18 @@ Before launching the tool, ensure your source PSD follows the **Naming Conventio
 *   **Generate Universal Rigging Structure**: Click the primary action button to begin the extraction.
 *   **Process Log**: Monitor the real-time terminal inside the GUI. It will provide instant feedback on:
     *   File path detection and loading.
-    *   Coordinate conversion and bounding box calculations.
-    *   Success/Failure states for asset exportation.
+    *   Success/Failure states for asset exports.
     *   Finalization of the U2DM Manifest file.
 
 
 ## 📂 Project Roadmap
 - [x] Multi-format PSD Parsing & Data Extraction
 - [x] PySide6 GUI with real-time logging and color picking
-- [x] Automated PNG asset exportation
+- [x] Automated PNG asset exports
 - [ ] **Harmony 25 Adapter**: Automated Node View reconstruction
 - [ ] **Moho Adapter**: Another critical app in the industry
 - [ ] **Blender Adapter**: Grease Pencil skeletal generation
-- [ ] **Tahoma2D Adapter**: XML-based `.tnz` scene injection
+- [ ] **Tahoma2D Adapter**: XML-based `.tnz` scene injection(I started and finished this one, but have to study how to include to the flow)
 
 ## Important
 Note: The Harmony Adapter must be executed using the internal Harmony Python 3.9 interpreter or an external environment mapped to Harmony's libraries.
