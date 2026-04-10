@@ -77,7 +77,9 @@ class HarmonyRigBuilder:
     
     
     def import_nodes(self):
-        for p in self.parts.keys():
+        keys = list(self.parts.keys())
+        keys.reverse()
+        for p in keys:
             img_path = os.path.join(self.assets_root, f"{p}.png")
             drawing = self.create_drawing(p, img_path)
             if self.parts[p]["parent"] and drawing:
