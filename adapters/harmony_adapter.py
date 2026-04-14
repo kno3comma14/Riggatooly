@@ -61,6 +61,8 @@ class HarmonyRigBuilder:
 
 
     def prepare_peg(self, peg, pivote, position):
+        separate_attr = peg.attributes["POSITION.SEPARATE"]
+        separate_attr.set_value(1, True)
         attr = peg.attributes["POSITION"]
         x = self.pixels_to_fields_X(position["x"])
         y = self.pixels_to_fields_Y(position["y"])
