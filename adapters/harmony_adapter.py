@@ -74,6 +74,8 @@ class HarmonyRigBuilder:
         
     
     def prepare_drawing(self, drawing, peg_pivot):
+        separate_attr = drawing.attributes["POSITION.SEPARATE"]
+        separate_attr.set_value(1, True)
         drawing_piv_attr = drawing["nodes"][0].attributes["PIVOT"]
         drawing_piv_attr.set_value(1, harmony.Point3d(self.pixels_to_fields_X(peg_pivot["x"]), -self.pixels_to_fields_Y(peg_pivot["y"]), 0))
     
