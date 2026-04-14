@@ -1,7 +1,9 @@
 # 🛠️ Riggatooly
+
 **Universal 2D Pipeline & Automated Rigging Framework**
 
-Riggatooly is a high-performance Technical Animation (TA) toolkit designed to bridge the gap between raster artwork (Photoshop/Krita) and professional 2D animation suites. By implementing a **Universal 2D Manifest (U2DM)**, Riggatooly automates some of the most time-consuming parts of production: pivot placement, asset extraction, and initial skeletal hierarchy construction.
+Riggatooly is a high-performance Technical Animation (TA) toolkit designed to bridge the gap between raster artwork (Photoshop) and professional 2D animation suites. By implementing a **Universal 2D Manifest (U2DM)**, Riggatooly automates some of the most time-consuming parts of production: pivot placement, asset extraction, and initial skeletal hierarchy construction.
+
 
 ## 🚀 The Vision
 In professional 2D pipelines, rigging usually requires hours of manual labor to set pivots and parent layers. **Riggatooly** solves this by using a "Source of Truth" workflow:
@@ -13,9 +15,9 @@ In professional 2D pipelines, rigging usually requires hours of manual labor to 
 Riggatooly is built on a modular "Extractor-Adapter" pattern:
 
 *   **The Extractor (Core)**: A standalone Python/PySide6 application that uses `psd-tools` and `NumPy` to perform geometric center calculations and color-based pivot detection.
-*   **The Linter**: An integrated validation engine that scans source files for naming convention errors, duplicate layers, or missing pivots before data reaches the pipeline.
+*   **The Linter**: An integrated validation engine that scans source files for naming convention errors, duplicate layers, or missing pivots before data reaches the pipeline.(This is not ready yet.)
 *   **The Adapters**:
-    *   **Live-Link (API-based)**: Direct integration with **Toon Boom Harmony 25** (Python SDK) and **Blender Grease Pencil** (bpy) to build live node networks.
+    *   **Live-Link (API-based)**: Direct integration with **Toon Boom Harmony 25** (Python SDK).
     *   **File-Injection**: Automated XML scene generation for **Tahoma2D / OpenToonz**, allowing for "one-click" scene loading without internal plugins.
 
 ## 🛠️ Key Features
@@ -40,8 +42,8 @@ Before launching the tool, ensure your source PSD follows the **Naming Conventio
 
 ### 2. Configuration
 1.  **Browse PSD File**: Click to select your source `.psd` file.
-2.  **Browse Target Folder**: Select the destination directory where Riggatooly will export your PNG assets and the `manifest.json`.
-3.  **Peg per Drawing**: Enable this checkbox to automatically generate a dedicated Peg layer for every drawing part (Industry Standard Practice).
+2.  **Browse Target Folder**: Select the destination directory where Riggatooly will export your PNG assets and the `*.json` file.
+3.  **Peg per Drawing**: Enable this checkbox to automatically generate a dedicated Peg layer for every drawing part (Industry Standard Practice in Harmony and Opentoonz).
 4.  **Change Pivote Color**: Open the color picker to match the RGB value used for the joint markers in your artwork.
 
 ### 3. Execution & Logging
@@ -51,15 +53,16 @@ Before launching the tool, ensure your source PSD follows the **Naming Conventio
     *   Success/Failure states for asset exports.
     *   Finalization of the U2DM Manifest file.
 
-
 ## 📂 Project Roadmap
 - [x] Multi-format PSD Parsing & Data Extraction
 - [x] PySide6 GUI with real-time logging and color picking
 - [x] Automated PNG asset exports
-- [ ] **Harmony 25 Adapter**: Automated Node View reconstruction
-- [ ] **Moho Adapter**: Another critical app in the industry
-- [ ] **Blender Adapter**: Grease Pencil skeletal generation
-- [ ] **Tahoma2D Adapter**: XML-based `.tnz` scene injection(I started and finished this one, but have to study how to include to the flow)
+- [x] **Harmony 25 Adapter V0**: Automated Node View reconstruction
+- [ ] **Moho Adapter V0**: Another critical app in the industry(I need to see if they allow to script in the try version)
+- [ ] **Blender Adapter V0 - In Progress**: Grease Pencil skeletal generation, it's complicated because the hierarchy is not that predictable.
+- [x] **Tahoma2D Adapter V0**: XML-based `.tnz` scene injection. This one was the initial one, I finished a V0 as well but it has to be run outside of Tahoma/Opentoonz.
+
+It's important to add that the creation of the manifest json file still in construction. For applications such as Blender and Moho a hierarchy is almost necessary to ensure at least an initial skeleton because the size of the bones and the parent-children relationships have to stablished.
 
 ## Important
 Note: The Harmony Adapter must be executed using the internal Harmony Python 3.9 interpreter or an external environment mapped to Harmony's libraries.
